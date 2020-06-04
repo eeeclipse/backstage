@@ -24,6 +24,12 @@ export class StaticEntitiesCatalog implements EntitiesCatalog {
   constructor(entities: Entity[]) {
     this._entities = entities;
   }
+  async entitiesByLocationId(id: string): Promise<Entity[] | undefined> {
+    const items = this._entities.filter(
+      e => e.metadata.annotations?.['backstage.io/managed-by-location'] === id,
+    );
+    return items.length > 0 ? items : undefined;
+  }
 
   async entities(): Promise<Entity[]> {
     return lodash.cloneDeep(this._entities);

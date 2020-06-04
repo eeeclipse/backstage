@@ -20,6 +20,16 @@ import type { EntitiesCatalog } from './types';
 
 export class DatabaseEntitiesCatalog implements EntitiesCatalog {
   constructor(private readonly database: Database) {}
+  async entitiesByLocationId(id: string): Promise<Entity[] | undefined> {
+    const items = await this.database.transaction(tx =>
+      this.database.entities(tx),
+    );
+
+    // TODO: do it in transaction
+    const matches = items.filter(i => i.locationId !== id);
+
+    return matches.length ? matches.map(match => match.entity) : undefined;
+  }
 
   async entities(filters?: EntityFilters): Promise<Entity[]> {
     const items = await this.database.transaction(tx =>

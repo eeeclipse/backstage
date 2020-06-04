@@ -31,6 +31,12 @@ export class CatalogClient implements CatalogApi {
     this.apiOrigin = apiOrigin;
     this.basePath = basePath;
   }
+  async deleteEntityByUid(uid: string): Promise<void> {
+    const response = await fetch(
+      `${this.apiOrigin}${this.basePath}/entities/by-uid/${uid}`,
+    );
+    return await response.json();
+  }
   async getEntities(): Promise<DescriptorEnvelope[]> {
     const response = await fetch(`${this.apiOrigin}${this.basePath}/entities`);
     return await response.json();

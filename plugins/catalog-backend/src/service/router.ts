@@ -60,6 +60,14 @@ export async function createRouter(
         }
         res.status(200).send(entity);
       })
+      .get('/entities/by-location-id/:id', async (req, res) => {
+        const { id } = req.params;
+        const entities = await entitiesCatalog.entitiesByLocationId(id);
+        if (!entities) {
+          res.status(404).send(`No entity with location ID ${id}`);
+        }
+        res.status(200).send(entities);
+      })
       .delete('/entities/by-uid/:uid', async (req, res) => {
         const { uid } = req.params;
         await entitiesCatalog.removeEntityByUid(uid);
